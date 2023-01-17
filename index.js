@@ -5,6 +5,10 @@ const app = express();
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const stripe = require("stripe")("sk_test_51M6TOhLZ8s0yewmCKIERlWDqgmuV0dUPMcqr6t68lquLbV9ES0l7wH2zsYyXgZUjwvvhxFeUujmMHDWRGVOZnxSM00E1Hd7kmq");
+
+const PDFDocument = require('pdfkit');
+const fs = require("fs");
+
 const port = process.env.PORT || 5000;
 
 app.use(cors());
@@ -103,15 +107,7 @@ async function run() {
             res.send(currency);
         })
 
-
-
-
-
         // This is for Find Job 
-
-
-
-
         app.post('/jobs', async (req, res) => {
             console.log(req.body);
             const jobInfo = req.body;
@@ -156,20 +152,11 @@ async function run() {
             // }
         })
 
-
-
         app.get('/jobDetails/:id', (req, res) => {
-            console.log("hit koreche");
             const id = req.params.id;
             console.log(id);
             res.send('ghjghj')
         })
-
-
-
-        // this is for user 
-
-
 
         // this is user create api 
         app.post('/addUsers', async (req, res) => {
@@ -192,6 +179,148 @@ async function run() {
             const userType = user.userType;
             // console.log(user)
             res.json(userType);
+        })
+
+        // create pdf resume
+        app.post("/create-pdf", async (req, res) => {
+            try {
+                const { fileName, name, position, address, phone, email, portfolio, github, linkedIn } = req.body;
+
+                const { languages, instituteName, projectDescrition, serverCode, clientCode, liveSite, projectName, skills, careerObjective } = req.body
+
+                const doc = await new PDFDocument();
+                doc.pipe(fs.createWriteStream(`./resumes/${fileName}.pdf`));
+
+                doc
+                    .fontSize(25)
+                    .font("Helvetica")
+                    .text(`${name}`, 50, 50)
+
+                doc
+                    .fontSize(20)
+                    .text(`${position}`, 50, 75)
+
+                doc
+                    .fontSize(14)
+                    .text(`Address: ${address}`, 50, 120)
+                    .text(`Phone: ${phone}`, 50, 140)
+
+                doc
+                    .fontSize(14)
+                    .text('My Email Address', 50, 160, {
+                        link: `${email}`,
+                        underline: true
+                    }
+                    )
+
+                doc
+                    .fontSize(14)
+                    .text('My Portfolio', 50, 180, {
+                        link: `${portfolio}`,
+                        underline: true
+                    }
+                    )
+
+                doc
+                    .fontSize(14)
+                    .text('GitHub Profile', 50, 200, {
+                        link: `${github}`,
+                        underline: true
+                    }
+                    )
+
+                doc
+                    .fontSize(14)
+                    .text('LinkedIn Profile', 50, 220, {
+                        link: `${linkedIn}`,
+                        underline: true,
+
+                    }
+                    )
+
+                doc
+                    .fontSize(20)
+                    .text('CAREER OBJECTIVE', 50, 260)
+
+                    // career oblective
+                doc
+                    .fontSize(14)
+                    .text(`${careerObjective}`, 50, 280)
+
+                // skills
+                doc
+                    .fontSize(20)
+                    .text('SKILLS', 50, 320);
+
+                doc
+                    .fontSize(14)
+                    .text(`${skills}`, 50, 340)
+
+
+                // projects
+                doc
+                    .fontSize(20)
+                    .text(`Best Project: ${projectName}`, 50, 435);
+
+                doc
+                    .fontSize(16)
+                    .text('Live Website', 50, 460, {
+                        link: `${liveSite}`,
+                        underline: true
+                    }
+                    )
+    
+                doc
+                    .fontSize(16)
+                    .text('Client Side Code', 50, 480, {
+                        link: `${clientCode}`,
+                        underline: true
+                    }
+                    )
+                doc
+                    .fontSize(16)
+                    .text('Server Side Code', 50, 500, {
+                        link: `${serverCode}`,
+                        underline: true
+                    }
+                    )
+
+                // projects
+                doc
+                    .fontSize(16)
+                    .text(`Description:`, 50, 530)
+
+                    // project dexcripton
+                doc
+                    .fontSize(14)
+                    .text(`${projectDescrition}`, 50, 550)
+
+
+                // education
+                doc
+                    .fontSize(20)
+                    .text(`Education`, 50, 620)
+
+                doc
+                    .fontSize(14)
+                    .text(`${instituteName}`, 50, 640);
+
+                // languages
+                doc
+                    .fontSize(14)
+                    .text(`Languages`, 50, 670)
+                    .text(`${languages}`, 50, 690)
+
+
+
+                // Finalize PDF file
+                doc.end();
+
+                // return something
+                res.send({ message: "PDF created successfully" })
+            } catch (error) {
+                res.status(500).json({ error: error.message })
+            }
         })
     }
     finally {
