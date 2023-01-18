@@ -181,16 +181,20 @@ async function run() {
             res.json(userType);
         })
 
+
         // create pdf resume
-        app.post("/create-pdf", async (req, res) => {
+        app.post("/create-resume", async (req, res) => {
             try {
-                const { fileName, name, position, address, phone, email, portfolio, github, linkedIn } = req.body;
+                const { firstName, lastName, position, city,state, country , phone, email, portfolio, github, linkedIn } = req.body;
 
                 const { languages, instituteName, projectDescrition, serverCode, clientCode, liveSite, projectName, skills, careerObjective } = req.body
 
                 const doc = await new PDFDocument();
+
+                const fileName = firstName + " " + lastName
                 doc.pipe(fs.createWriteStream(`./resumes/${fileName}.pdf`));
 
+                const name = firstName + " " + lastName
                 doc
                     .fontSize(25)
                     .font("Helvetica")
@@ -200,6 +204,7 @@ async function run() {
                     .fontSize(20)
                     .text(`${position}`, 50, 75)
 
+                const address = city + ", " + state + ", " + country + "."
                 doc
                     .fontSize(14)
                     .text(`Address: ${address}`, 50, 120)
@@ -317,7 +322,7 @@ async function run() {
                 doc.end();
 
                 // return something
-                res.send({ message: "PDF created successfully" })
+                res.send({ message: "Resume created successfully" })
             } catch (error) {
                 res.status(500).json({ error: error.message })
             }
