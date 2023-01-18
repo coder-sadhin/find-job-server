@@ -8,6 +8,7 @@ const stripe = require("stripe")("sk_test_51M6TOhLZ8s0yewmCKIERlWDqgmuV0dUPMcqr6
 
 const PDFDocument = require('pdfkit');
 const fs = require("fs");
+const candidateDataValidator = require('./validator/candidate.validator');
 
 const port = process.env.PORT || 5000;
 
@@ -182,8 +183,12 @@ async function run() {
         })
 
 
+        app.post("/create-account", candidateDataValidator, async(req, res) => {
+            res.send("User created successfully")
+        })
+
         // create pdf resume
-        app.post("/create-resume", async (req, res) => {
+        app.post("/create-resume", candidateDataValidator ,async (req, res) => {
             try {
                 const { firstName, lastName, position, city,state, country , phone, email, portfolio, github, linkedIn } = req.body;
 
