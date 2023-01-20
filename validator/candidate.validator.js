@@ -1,116 +1,116 @@
-const {check, validationResult} = require("express-validator");
+const { check, validationResult } = require("express-validator");
 
 const candidateDataValidator = [
     check("firstName")
-    .notEmpty()
+        .notEmpty()
         .withMessage("FirstName is missing"),
 
     check("lastName")
-    .notEmpty()
+        .notEmpty()
         .withMessage("LastName is missing"),
 
     check("careerObjective")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Career Objective is missing"),
 
     check("city")
-    .notEmpty()
+        .notEmpty()
         .withMessage("City is missing"),
 
     check("postalCode")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Postal Code is missing"),
 
     check("state")
-    .notEmpty()
+        .notEmpty()
         .withMessage("State is missing"),
 
     check("country")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Country is missing"),
 
     check("instituteName")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Institute Name is missing"),
 
     check("class")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Class is missing"),
 
     check("subject")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Subject is missing"),
 
     check("board")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Board is missing"),
 
     check("cgpa")
-    .notEmpty()
+        .notEmpty()
         .withMessage("CGPA is missing"),
 
     check("skills")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Skills are missing"),
 
     check("position")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Position is missing"),
 
     check("github")
-    .notEmpty()
+        .notEmpty()
         .withMessage("GitHub is missing"),
 
     check("linkedIn")
-    .notEmpty()
+        .notEmpty()
         .withMessage("LinkedIn is missing"),
 
     check("portfolio")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Portfolio is missing"),
 
     check("phone")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Phone is missing"),
 
     check("projectName")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Project Name is missing"),
 
     check("liveSite")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Live Site is missing"),
 
     check("projectName")
-    .notEmpty()
+        .notEmpty()
         .withMessage("ProjectName is missing"),
 
     check("clientCode")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Client Code is missing"),
 
     check("serverCode")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Server Code is missing"),
 
     check("projectDescrition")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Project Descrition is missing"),
 
     check("technologies")
-    .notEmpty()
+        .notEmpty()
         .withMessage("Technologies are missing"),
 
     check("languages")
-    .notEmpty()
-    .withMessage("Languages are missing"),
+        .notEmpty()
+        .withMessage("Languages are missing"),
 
     (req, res, next) => {
         const error = validationResult(req);
-        if(!error.isEmpty()){
+        if (!error.isEmpty()) {
             const errors = error.array().map((err) => err.msg);
             const errorObject = []
-            errors.map((err) => errorObject.push({error: err}));
+            errors.map((err) => errorObject.push({ error: err }));
             console.log(errorObject);
             return res.send(errorObject)
         }
