@@ -321,7 +321,6 @@ async function run() {
         app.get("/jobs", async (req, res) => {
             const jobstype = req.query.jobstype;
             const result = await jobsCollection.find({}).toArray();
-            console.log(jobstype);
             if(jobstype === "all") {
                 res.send(result);
             } else {
@@ -335,7 +334,6 @@ async function run() {
 
         app.get("/jobDetails/:id", async (req, res) => {
             const id = req.params.id;
-            console.log(id);
             const job = await jobsCollection.findOne({ _id: ObjectId(id) });
             res.send(job);
         });
@@ -385,6 +383,41 @@ async function run() {
             res.send(jobs)
         })
 
+        app.get("/users", async (req, res) => {
+            const users = await usersCollection.find({}).toArray()
+            res.send(users)
+        })
+        app.get("/users/:email", async (req, res) => {
+            const user = await usersCollection.findOne({email: req.params.email});
+            res.send(user)
+        })
+
+        // delete job
+        app.delete("/applied-job/:id", async (req, res) => {
+            const id = req.params.id
+            const result = await appliedJobCollection.deleteOne({_id: ObjectId(id)})
+            res.send(result)
+        })
+
+        app.put("/jobs/apply/:id", async(req, res) => {
+            const candidates = [];
+            const candidate = {
+                name: req.body.name,
+                email: req.body.email,
+                candidateId: req.body.candidateId
+            }
+            candidates.push(candidate);
+            const id = req.params.id
+            const filter = {_id: ObjectId(id)};
+            const option = {upsert: true}
+            const updatedJob = {
+                $set: {
+                    candidates: candidates
+                }
+            }
+            const result = await jobsCollection.updateOne(filter, updatedJob, option)
+            res.send(result)
+        })
     }
     finally {
 
