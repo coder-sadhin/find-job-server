@@ -88,7 +88,6 @@ async function run() {
         const currencyCollection = client.db("find_a_job").collection("currency");
         const jobsCollection = client.db("find_a_job").collection("jobsCollection");
 
-
         // get current user to update subscribetion status
         app.put("/users/subscribe/:email", async(req, res) => {
             const email = req.params.email;
@@ -153,12 +152,6 @@ async function run() {
             // }
         })
 
-        app.get('/jobDetails/:id', (req, res) => {
-            const id = req.params.id;
-            console.log(id);
-            res.send('ghjghj')
-        })
-
         // this is user create api 
         app.post('/addUsers', async (req, res) => {
             console.log(req.body);
@@ -182,10 +175,6 @@ async function run() {
             res.json(userType);
         })
 
-
-        app.post("/create-account", candidateDataValidator, async(req, res) => {
-            res.send("User created successfully")
-        })
 
         // create pdf resume
         app.post("/create-resume", candidateDataValidator ,async (req, res) => {
