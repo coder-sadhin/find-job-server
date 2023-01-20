@@ -152,48 +152,8 @@ async function run() {
                 console.log(filData);
                 return filData
             })
-            // console.log(filterData);
-            // res.send(filterData)
-
-            // for (const exp of checkItem) {
-            //     let filterData = result.filter(job => {
-            //         job.job_details.experience === exp;
-            //     }
-            //     )
             console.log(filterData);
-
-            // }
         })
-
-        app.get('/jobDetails/:id', (req, res) => {
-            const id = req.params.id;
-            console.log(id);
-            res.send('ghjghj')
-        })
-
-        // this is user create api 
-        app.post('/addUsers', async (req, res) => {
-            console.log(req.body);
-            const user = req.body;
-            const result = await usersCollection.insertOne(user);
-            res.send(result)
-        })
-
-        // this is for check user type 
-        app.get('/checkUser/type', async (req, res) => {
-            const email = req.query.email;
-            const query = {
-                email: email
-            }
-            const user = await usersCollection.findOne(query)
-            if (!user) {
-                return res.status(401).send('You Have No account')
-            }
-            const userType = user.userType;
-            // console.log(user)
-            res.json(userType);
-        })
-
 
         app.post("/create-account", candidateDataValidator, async (req, res) => {
             res.send("User created successfully")
@@ -368,31 +328,7 @@ async function run() {
             }
         });
 
-        app.post("/jobs/exp", async (req, res) => {
-            const checkItem = req.body;
-            const result = await jobsCollection.find({}).toArray();
-            console.log(checkItem);
 
-            const filterData = result.filter((job) => {
-                let filData = checkItem.forEach(
-                    (item) =>
-                        item.toLowerCase() === job.job_details.experience.toLowerCase()
-                );
-                console.log(filData);
-                return filData;
-            });
-            // console.log(filterData);
-            // res.send(filterData)
-
-            // for (const exp of checkItem) {
-            //     let filterData = result.filter(job => {
-            //         job.job_details.experience === exp;
-            //     }
-            //     )
-            console.log(filterData);
-
-            // }
-        });
 
         app.get("/jobDetails/:id", async (req, res) => {
             const id = req.params.id;
