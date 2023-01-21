@@ -174,7 +174,7 @@ async function run() {
     });
 
     // this is for user
-    
+
     // this is user create api
     app.post("/addUsers", async (req, res) => {
       console.log(req.body);
@@ -201,11 +201,40 @@ async function run() {
     // report job by @sarwar ///
     app.post("/addReport", async (req, res) => {
       const reports = req.body;
-      console.log(reports);
-      const result = await reportJobCollection.insertOne(reports);
-      res.send(result);
+      const email = reports?.repoerterEmail;
+      const jobid = reports?.jobId;
+      // console.log(reports);
+      const alreadyreported = await reportJobCollection
+        .find({
+          repoerterEmail: email,
+        })
+        .toArray();
+
+      const isReported = alreadyreported.find((repo) => repo.jobId === jobid);
+      // console.log("find", isReported);
+      if (!isReported) {
+        const result = await reportJobCollection.insertOne(reports);
+        res.send({ type: "reported" });
+      } else {
+        res.send({ type: "already reported" });
+      }
     });
-    
+
+    // get reported job  / @sarwar /
+    app.get("/reportedJob", async (req, res) => {
+      const query = {};
+      const reports = await reportJobCollection.find(query).toArray();
+      res.send(reports);
+    });
+
+    // delete job and report ////
+    app.delete("/deleteReports", async (req, res) => {
+      const jobId = req.body.jobId;
+      console.log(jobId);
+      const deletReport = await reportJobCollection.deleteOne({ jobId: jobId });
+      const deletjob = await jobsCollection.deleteOne({ _id: ObjectId(jobId) });
+      res.send({ name: "delete job and report" });
+    });
   } finally {
   }
 }
