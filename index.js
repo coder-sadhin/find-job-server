@@ -17,6 +17,7 @@ const payment_intent = require('./Router/Payment/Payments.js');
 const userRouter = require("./Router/Users/usersRoute.js");
 const jobsRoute = require("./Router/JobsRoute/jobsRoute.js");
 const jobApplyRoute = require("./Router/JobApplication/jobApplyRoute.js");
+const jobsReportRoute = require("./Router/JobReport/JobReportRoute.js");
 
 
 
@@ -27,6 +28,7 @@ app.use('/payment/intent', payment_intent);
 app.use('/user', userRouter);
 app.use('/jobs', jobsRoute);
 app.use('/apply-job', jobApplyRoute);
+app.use('/report', jobsReportRoute);
 
 
 
@@ -89,12 +91,12 @@ async function run() {
         });
 
         // report job by @sarwar ///
-        app.post("/addReport", async (req, res) => {
-            const reports = req.body;
-            console.log(reports);
-            const result = await reportJobCollection.insertOne(reports);
-            res.send(result);
-        });
+
+
+
+
+
+
 
         app.put("/jobs/apply/:id", async (req, res) => {
             const candidates = [];
