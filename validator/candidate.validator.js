@@ -11,7 +11,9 @@ const candidateDataValidator = [
 
     check("careerObjective")
         .notEmpty()
-        .withMessage("Career Objective is missing"),
+        .withMessage("Career Objective is missing")
+        .isLength({max: 250})
+        .withMessage("Career Objective must be less than 250 charecters"),
 
     check("city")
         .notEmpty()
@@ -95,7 +97,9 @@ const candidateDataValidator = [
 
     check("projectDescrition")
         .notEmpty()
-        .withMessage("Project Descrition is missing"),
+        .withMessage("Project Descrition is missing")
+        .isLength({max: 150})
+        .withMessage("Project Descrition must be less than 150 charecters"),
 
     check("technologies")
         .notEmpty()
@@ -109,10 +113,9 @@ const candidateDataValidator = [
         const error = validationResult(req);
         if (!error.isEmpty()) {
             const errors = error.array().map((err) => err.msg);
-            const errorObject = []
-            errors.map((err) => errorObject.push({ error: err }));
-            console.log(errorObject);
-            return res.send(errorObject)
+            const errorList = []
+            errors.map((err) => errorList.push({ error: err }));
+            return res.send(errorList)
         }
         next()
     }
