@@ -198,6 +198,7 @@ async function run() {
       res.json(userType);
     });
 
+    
     // report job by @sarwar ///
     app.post("/addReport", async (req, res) => {
       const reports = req.body;
@@ -226,7 +227,6 @@ async function run() {
       const reports = await reportJobCollection.find(query).toArray();
       res.send(reports);
     });
-
     // delete job and report ////
     app.delete("/deleteReports", async (req, res) => {
       const jobId = req.body.jobId;
