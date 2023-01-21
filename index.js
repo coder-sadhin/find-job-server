@@ -13,19 +13,20 @@ app.use(express.json());
 // this is for router collections 
 const { client, client2 } = require("./Db/dbConfig.js");
 const create_resume = require('./Router/Candidate/Resume.js');
-const payment_intent = require('./Router/Payment/Payments.js');
+
 const userRouter = require("./Router/Users/usersRoute.js");
 const jobsRoute = require("./Router/JobsRoute/jobsRoute.js");
 const jobApplyRoute = require("./Router/JobApplication/jobApplyRoute.js");
 const jobsReportRoute = require("./Router/JobReport/JobReportRoute.js");
 const tokenRoute = require("./Router/Candidate/Token.js");
+const paymentRoute = require("./Router/Payment/Payments.js");
 
 
 
 // this is for testing routing
 
 app.use('/create-resume', create_resume);
-app.use('/payment/intent', payment_intent);
+app.use('/payment', paymentRoute);
 app.use('/user', userRouter);
 app.use('/jobs', jobsRoute);
 app.use('/apply-job', jobApplyRoute);
