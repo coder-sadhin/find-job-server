@@ -18,6 +18,7 @@ const userRouter = require("./Router/Users/usersRoute.js");
 const jobsRoute = require("./Router/JobsRoute/jobsRoute.js");
 const jobApplyRoute = require("./Router/JobApplication/jobApplyRoute.js");
 const jobsReportRoute = require("./Router/JobReport/JobReportRoute.js");
+const tokenRoute = require("./Router/Candidate/Token.js");
 
 
 
@@ -29,6 +30,7 @@ app.use('/user', userRouter);
 app.use('/jobs', jobsRoute);
 app.use('/apply-job', jobApplyRoute);
 app.use('/report', jobsReportRoute);
+app.use('/token', tokenRoute);
 
 
 
