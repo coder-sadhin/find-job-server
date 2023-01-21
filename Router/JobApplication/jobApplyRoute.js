@@ -1,6 +1,7 @@
 const express = require('express');
 const { client2 } = require('../../Db/dbConfig');
 const jobApplyRoute = express.Router();
+const { ObjectId } = require("mongodb");
 async function run() {
     try {
         const appliedJobCollection = client2.db("find_a_job").collection("appliedJobs");
@@ -17,7 +18,7 @@ async function run() {
             res.send(jobs)
         })
 
-        jobApplyRoute.delete("/applied-job/:id", async (req, res) => {
+        jobApplyRoute.delete("/:id", async (req, res) => {
             const id = req.params.id
             const result = await appliedJobCollection.deleteOne({ _id: ObjectId(id) })
             res.send(result)
