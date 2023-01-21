@@ -92,12 +92,6 @@ async function run() {
 
         // report job by @sarwar ///
 
-
-
-
-
-
-
         app.put("/jobs/apply/:id", async (req, res) => {
             const candidates = [];
             const candidate = {
