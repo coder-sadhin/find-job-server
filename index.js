@@ -86,12 +86,9 @@ async function run() {
 
         // currency data fetch
         const currencyCollection = client2.db("find_a_job").collection("currency");
-        const jobsCollection = client2
-            .db("find_a_job")
-            .collection("jobsCollection");
-        const reportJobCollection = client2
-            .db("find_a_job")
-            .collection("reportJobCollection");
+        const jobsCollection = client2.db("find_a_job").collection("jobsCollection");
+        const reportJobCollection = client2.db("find_a_job").collection("reportJobCollection");
+        const appliedJobCollection = client2.db("find_a_job").collection("appliedJobs");
 
         // const profile = client.db("find_a_job").collection("jobsCollection");
 
@@ -118,16 +115,6 @@ async function run() {
             res.send(currency);
         });
 
-        // This is for Find Job
-
-        // This is for Find Job 
-        app.post('/jobs', async (req, res) => {
-            console.log(req.body);
-            const jobInfo = req.body;
-            const result = await jobsCollection.insertOne(jobInfo);
-            res.send(result)
-        })
-
         app.get('/jobs', async (req, res) => {
             const jobstype = req.query.jobstype;
             const result = await jobsCollection.find({}).toArray();
@@ -153,10 +140,30 @@ async function run() {
                 return filData
             })
             console.log(filterData);
+
         })
 
-        app.post("/create-account", candidateDataValidator, async (req, res) => {
-            res.send("User created successfully")
+        // this is user create api 
+        app.post('/addUsers', async (req, res) => {
+            console.log(req.body);
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            res.send(result)
+        })
+
+        // this is for check user type 
+        app.get('/checkUser/type', async (req, res) => {
+            const email = req.query.email;
+            const query = {
+                email: email
+            }
+            const user = await usersCollection.findOne(query)
+            if (!user) {
+                return res.status(401).send('You Have No account')
+            }
+            const userType = user.userType;
+            // console.log(user)
+            res.json(userType);
         })
 
         // create pdf resume
@@ -305,9 +312,7 @@ async function run() {
             }
         })
 
-
         app.post("/jobs", async (req, res) => {
-            console.log(req.body);
             const jobInfo = req.body;
             const result = await jobsCollection.insertOne(jobInfo);
             res.send(result);
@@ -316,8 +321,7 @@ async function run() {
         app.get("/jobs", async (req, res) => {
             const jobstype = req.query.jobstype;
             const result = await jobsCollection.find({}).toArray();
-            console.log(jobstype);
-            if (jobstype === "all") {
+            if(jobstype === "all") {
                 res.send(result);
             } else {
                 const filterData = result.filter((job) =>
@@ -328,16 +332,11 @@ async function run() {
             }
         });
 
-
-
         app.get("/jobDetails/:id", async (req, res) => {
             const id = req.params.id;
-            console.log(id);
             const job = await jobsCollection.findOne({ _id: ObjectId(id) });
             res.send(job);
         });
-
-        // this is for user
 
         // this is user create api
         app.post("/addUsers", async (req, res) => {
@@ -370,7 +369,55 @@ async function run() {
             res.send(result);
         });
 
+        // save applied job to db
+        app.post("/apply-job", async(req, res) => {
+            const application = req.body;
+            const result = await appliedJobCollection.insertOne(application)
+            res.send(result)
+        })
 
+        // get applied job for a specific candidate
+        app.get("/applied-job/:email", async(req, res) => {
+            const email = req.params.email
+            const jobs = await appliedJobCollection.find({ candidateEmail : email}).toArray()
+            res.send(jobs)
+        })
+
+        app.get("/users", async (req, res) => {
+            const users = await usersCollection.find({}).toArray()
+            res.send(users)
+        })
+        app.get("/users/:email", async (req, res) => {
+            const user = await usersCollection.findOne({email: req.params.email});
+            res.send(user)
+        })
+
+        // delete job
+        app.delete("/applied-job/:id", async (req, res) => {
+            const id = req.params.id
+            const result = await appliedJobCollection.deleteOne({_id: ObjectId(id)})
+            res.send(result)
+        })
+
+        app.put("/jobs/apply/:id", async(req, res) => {
+            const candidates = [];
+            const candidate = {
+                name: req.body.name,
+                email: req.body.email,
+                candidateId: req.body.candidateId
+            }
+            candidates.push(candidate);
+            const id = req.params.id
+            const filter = {_id: ObjectId(id)};
+            const option = {upsert: true}
+            const updatedJob = {
+                $set: {
+                    candidates: candidates
+                }
+            }
+            const result = await jobsCollection.updateOne(filter, updatedJob, option)
+            res.send(result)
+        })
     }
     finally {
 
