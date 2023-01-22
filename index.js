@@ -34,8 +34,6 @@ app.use('/report', jobsReportRoute);
 app.use('/token', tokenRoute);
 
 
-
-
 app.get("/", async (req, res) => {
     res.send("Find A Job server is running");
 });
@@ -94,6 +92,14 @@ async function run() {
         });
 
         // report job by @sarwar ///
+
+        // app.post("/addReport", async (req, res) => {
+        //    const reports = req.body;
+        //    console.log(reports);
+        //    const result = await reportJobCollection.insertOne(reports);
+        //    res.send(result);
+        // });
+
 
         app.put("/jobs/apply/:id", async (req, res) => {
             const candidates = [];
