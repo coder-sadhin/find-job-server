@@ -22,13 +22,16 @@ const paymentRoute = require("./Router/Payment/Payments.js");
 
 // this is for testing routing
 
-app.use("/create-resume", create_resume);
-app.use("/payment", paymentRoute);
-app.use("/user", userRouter);
-app.use("/jobs", jobsRoute);
-app.use("/apply-job", jobApplyRoute);
-app.use("/report", jobsReportRoute);
-app.use("/token", tokenRoute);
+
+app.use('/createResume', create_resume);
+app.use('/payment', paymentRoute);
+app.use('/user', userRouter);
+app.use('/jobs', jobsRoute);
+app.use('/applyJob', jobApplyRoute);
+app.use('/report', jobsReportRoute);
+app.use('/token', tokenRoute);
+
+
 
 app.get("/", async (req, res) => {
   res.send("Find A Job server is running");
