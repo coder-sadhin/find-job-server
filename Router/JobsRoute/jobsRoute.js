@@ -33,6 +33,13 @@ async function run() {
             const job = await jobsCollection.findOne({ _id: ObjectId(id) });
             res.send(job);
         });
+
+        // delete job
+        jobsRoute.delete("/:id", async (req, res) => {
+            const id = req.params.id;
+            const result = await jobsCollection.deleteOne({ _id: ObjectId(id) });
+            res.send(result)
+        });
     }
     finally {
     }
