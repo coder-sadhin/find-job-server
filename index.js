@@ -11,7 +11,7 @@ app.use(express.json());
 
 // this is for router collections
 const { client, client2 } = require("./Db/dbConfig.js");
-const create_resume = require('./Router/Candidate/Resume.js');
+const create_resume = require("./Router/Candidate/Resume.js");
 
 const userRouter = require("./Router/Users/usersRoute.js");
 const jobsRoute = require("./Router/JobsRoute/jobsRoute.js");
@@ -22,14 +22,13 @@ const paymentRoute = require("./Router/Payment/Payments.js");
 
 // this is for testing routing
 
-app.use('/create-resume', create_resume);
-app.use('/payment', paymentRoute);
-app.use('/user', userRouter);
-app.use('/jobs', jobsRoute);
-app.use('/apply-job', jobApplyRoute);
-app.use('/report', jobsReportRoute);
-app.use('/token', tokenRoute);
-
+app.use("/create-resume", create_resume);
+app.use("/payment", paymentRoute);
+app.use("/user", userRouter);
+app.use("/jobs", jobsRoute);
+app.use("/apply-job", jobApplyRoute);
+app.use("/report", jobsReportRoute);
+app.use("/token", tokenRoute);
 
 app.get("/", async (req, res) => {
   res.send("Find A Job server is running");
@@ -89,15 +88,14 @@ async function run() {
       res.send(currency);
     });
 
-        // report job by @sarwar ///
+    // report job by @sarwar ///
 
-        // app.post("/addReport", async (req, res) => {
-        //    const reports = req.body;
-        //    console.log(reports);
-        //    const result = await reportJobCollection.insertOne(reports);
-        //    res.send(result);
-        // });
-
+    // app.post("/addReport", async (req, res) => {
+    //    const reports = req.body;
+    //    console.log(reports);
+    //    const result = await reportJobCollection.insertOne(reports);
+    //    res.send(result);
+    // });
 
     app.put("/jobs/apply/:id", async (req, res) => {
       const candidates = [];

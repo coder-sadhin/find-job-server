@@ -9,6 +9,9 @@ async function run() {
     const reportJobCollection = client2
       .db("find_a_job")
       .collection("reportJobCollection");
+    const jobsCollection = client2
+      .db("find_a_job")
+      .collection("jobsCollection");
 
     jobsReportRoute.post("/addReport", async (req, res) => {
       const reports = req.body;
@@ -43,6 +46,7 @@ async function run() {
       const jobId = req.body.jobId;
       console.log(jobId);
       const deletReport = await reportJobCollection.deleteOne({ jobId: jobId });
+
       const deletjob = await jobsCollection.deleteOne({ _id: ObjectId(jobId) });
       res.send({ name: "delete job and report" });
     });
