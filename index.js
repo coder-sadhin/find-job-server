@@ -23,7 +23,7 @@ const jobsReportRoute = require("./Router/JobReport/JobReportRoute.js");
 
 // this is for testing routing
 
-app.use('/create-resume', create_resume);
+app.use('/createresume', create_resume);
 app.use('/payment/intent', payment_intent);
 app.use('/user', userRouter);
 app.use('/jobs', jobsRoute);
