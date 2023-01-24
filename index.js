@@ -20,6 +20,8 @@ const jobApplyRoute = require("./Router/JobApplication/jobApplyRoute.js");
 const jobsReportRoute = require("./Router/JobReport/JobReportRoute.js");
 const tokenRoute = require("./Router/Candidate/Token.js");
 const paymentRoute = require("./Router/Payment/Payments.js");
+const AdminActionUsers = require("./Router/AdminAction/AdminActionUsers.js");
+const AdminActionJobs = require("./Router/AdminAction/AdminActionJobs.js");
 
 
 
@@ -32,6 +34,8 @@ app.use('/jobs', jobsRoute);
 app.use('/applyJob', jobApplyRoute);
 app.use('/report', jobsReportRoute);
 app.use('/token', tokenRoute);
+app.use('/admin', AdminActionUsers);
+app.use('/admin', AdminActionJobs);
 
 
 app.get("/", async (req, res) => {
