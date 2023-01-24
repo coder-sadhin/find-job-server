@@ -25,7 +25,7 @@ const paymentRoute = require("./Router/Payment/Payments.js");
 
 // this is for testing routing
 
-app.use('/createResume', create_resume);
+app.use('/createresume', create_resume);
 app.use('/payment', paymentRoute);
 app.use('/user', userRouter);
 app.use('/jobs', jobsRoute);
