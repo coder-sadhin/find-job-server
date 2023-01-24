@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const { ObjectId } = require("mongodb");
-const { client2 } = require('../../Db/dbConfig');
+const { client2 } = require("../../Db/dbConfig");
 
 const jobsReportRoute = express.Router();
 
@@ -60,7 +60,6 @@ async function run() {
     }
 }
 run().catch((err) => console.log(err));
-
 
 //export this router to use in our index.js
 module.exports = jobsReportRoute;
