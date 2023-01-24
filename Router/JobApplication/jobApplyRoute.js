@@ -24,7 +24,7 @@ async function run() {
                 },
             };
             const update = await usersCollection.updateOne(
-                filter,
+                query,
                 updatedUser,
                 option
             );
@@ -32,8 +32,8 @@ async function run() {
             res.send(result)
         })
 
-        jobApplyRoute.get("/:email", async (req, res) => {
-            const email = req.params.email
+        jobApplyRoute.get("/", async (req, res) => {
+            const email = req.query.email
             const jobs = await appliedJobCollection.find({ candidateEmail: email }).toArray()
             res.send(jobs)
         })

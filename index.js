@@ -19,16 +19,23 @@ const jobApplyRoute = require("./Router/JobApplication/jobApplyRoute.js");
 const jobsReportRoute = require("./Router/JobReport/JobReportRoute.js");
 const tokenRoute = require("./Router/Candidate/Token.js");
 const paymentRoute = require("./Router/Payment/Payments.js");
+const AdminActionUsers = require("./Router/AdminAction/AdminActionUsers.js");
+const AdminActionJobs = require("./Router/AdminAction/AdminActionJobs.js");
 
 // this is for testing routing
 
-app.use("/create-resume", create_resume);
-app.use("/payment", paymentRoute);
-app.use("/user", userRouter);
-app.use("/jobs", jobsRoute);
-app.use("/apply-job", jobApplyRoute);
-app.use("/report", jobsReportRoute);
-app.use("/token", tokenRoute);
+
+app.use('/createResume', create_resume);
+app.use('/payment', paymentRoute);
+app.use('/user', userRouter);
+app.use('/jobs', jobsRoute);
+app.use('/applyJob', jobApplyRoute);
+app.use('/report', jobsReportRoute);
+app.use('/token', tokenRoute);
+app.use('/admin', AdminActionUsers);
+app.use('/admin', AdminActionJobs);
+
+
 
 app.get("/", async (req, res) => {
   res.send("Find A Job server is running");
