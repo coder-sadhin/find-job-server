@@ -52,7 +52,7 @@ async function run() {
             console.log(jobId);
             const deletReport = await reportJobCollection.deleteOne({ jobId: jobId });
             const deletjob = await jobsCollection.deleteOne({ _id: ObjectId(jobId) });
-            res.send({ name: "delete job and report" });
+            res.send(deletjob);
         });
 
     }

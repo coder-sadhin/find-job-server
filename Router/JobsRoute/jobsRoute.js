@@ -7,6 +7,7 @@ const jobsRoute = express.Router();
 async function run() {
     try {
         const jobsCollection = client2.db("find_a_job").collection("jobsCollection");
+        const usersCollection = client2.db("find_a_job").collection("users");
 
         jobsRoute.get('/', async (req, res) => {
             const jobstype = req.query.jobstype;
@@ -24,6 +25,26 @@ async function run() {
 
         jobsRoute.post("/", async (req, res) => {
             const jobInfo = req.body;
+            const query = {
+                email: jobInfo.job_details.recruiter_email
+            }
+            const findUser = await usersCollection.findOne(query);
+            const exsistToken = Number(findUser.token)
+            if (!exsistToken > 0) {
+                return res.status(407).send("You Have No Token");
+            }
+            const option = { upsert: true };
+            const updatedUser = {
+                $set: {
+                    token: exsistToken - 1,
+                },
+            };
+            const update = await usersCollection.updateOne(
+                query,
+                updatedUser,
+                option
+            );
+
             const result = await jobsCollection.insertOne(jobInfo);
             res.send(result);
         });
