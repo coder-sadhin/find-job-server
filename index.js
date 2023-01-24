@@ -23,10 +23,9 @@ const AdminActionUsers = require("./Router/AdminAction/AdminActionUsers.js");
 const AdminActionJobs = require("./Router/AdminAction/AdminActionJobs.js");
 
 // this is for testing routing
+app.use('/createresume', create_resume);
+app.use('/payment/intent', payment_intent);
 
-
-app.use('/createResume', create_resume);
-app.use('/payment', paymentRoute);
 app.use('/user', userRouter);
 app.use('/jobs', jobsRoute);
 app.use('/applyJob', jobApplyRoute);
