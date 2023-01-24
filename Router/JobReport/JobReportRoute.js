@@ -50,6 +50,17 @@ async function run() {
       const deletjob = await jobsCollection.deleteOne({ _id: ObjectId(jobId) });
       res.send({ name: "delete job and report" });
     });
+    jobsReportRoute.get("/isreport", async (req, res) => {
+      const query = req.query;
+      const search = { repoerterEmail: query.email, jobId: query.jobid };
+      const result = await reportJobCollection.findOne(search);
+      if (result) {
+        res.send({ type: "reported" });
+      }
+
+      // console.log(query, "and", search);
+      console.log(result);
+    });
   } finally {
   }
 }
