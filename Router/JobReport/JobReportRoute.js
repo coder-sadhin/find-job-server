@@ -1,12 +1,13 @@
-const express = require('express');
+const express = require("express");
 const { ObjectId } = require("mongodb");
-const { client2 } = require('../../Db/dbConfig');
+const { client2 } = require("../../Db/dbConfig");
 
 const jobsReportRoute = express.Router();
 
 async function run() {
     try {
         const reportJobCollection = client2.db("find_a_job").collection("reportJobCollection");
+        const jobsCollection = client2.db("find_a_job").collection("jobsCollection");
         jobsReportRoute.post("/addReport", async (req, res) => {
             const reports = req.body;
             const email = reports?.repoerterEmail;
@@ -35,9 +36,19 @@ async function run() {
             res.send(reports);
         });
 
+
+        jobsReportRoute.get("/reportedJobDetails/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = {
+                _id: ObjectId(id)
+            };
+            const result = await reportJobCollection.findOne(query);
+            res.send(result);
+        });
+
         // delete job and report ////
         jobsReportRoute.delete("/deleteReports", async (req, res) => {
-            const jobId = req.body.jobId;
+            const jobId = req.query.id;
             console.log(jobId);
             const deletReport = await reportJobCollection.deleteOne({ jobId: jobId });
             const deletjob = await jobsCollection.deleteOne({ _id: ObjectId(jobId) });
@@ -49,7 +60,6 @@ async function run() {
     }
 }
 run().catch((err) => console.log(err));
-
 
 //export this router to use in our index.js
 module.exports = jobsReportRoute;
