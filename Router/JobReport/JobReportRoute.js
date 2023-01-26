@@ -12,6 +12,9 @@ async function run() {
     const jobsCollection = client2
       .db("find_a_job")
       .collection("jobsCollection");
+    const reportedCandidateCollection = client2
+      .db("find_a_job")
+      .collection("reportedCandidate");
 
     jobsReportRoute.post("/addReport", async (req, res) => {
       const reports = req.body;
