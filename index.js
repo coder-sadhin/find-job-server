@@ -141,10 +141,10 @@ async function run() {
                     Country: user?.Country,
                     City: user?.City,
                     link: user?.link,
-                    email: user?.email
+                    email: user?.email,
+                    image: user?.image
                 }
             }
-            console.log(updateProfile)
             const result = await userProfileCollection.updateOne(filter, updateProfile, option)
             res.send(result)
         })
@@ -152,6 +152,7 @@ async function run() {
         app.get('/profileData/:email', async (req, res) => {
             const query = req.params.email
             const result = await userProfileCollection.findOne({ email: query })
+            console.log(result)
             res.send(result)
         })
     }
