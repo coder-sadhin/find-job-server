@@ -28,7 +28,7 @@ const ReportUsersRoute = require("./Router/ReportUser/ReportUser.js");
 
 // this is for testing routing
 
-app.use('/createResume', create_resume);
+app.use('/createresume', create_resume);
 app.use('/payment', paymentRoute);
 app.use('/user', userRouter);
 app.use('/jobs', jobsRoute);
@@ -71,6 +71,8 @@ async function run() {
         const currencyCollection = client2.db("find_a_job").collection("currency");
         const jobsCollection = client2.db("find_a_job").collection("jobsCollection");
         const reportJobCollection = client2.db("find_a_job").collection("reportJobCollection");
+        const userProfileCollection = client2.db("find_a_job").collection("addProfile");
+
         // const profile = client.db("find_a_job").collection("jobsCollection");
 
         // get current user to update subscribetion status
@@ -126,6 +128,32 @@ async function run() {
             const result = await jobsCollection.updateOne(filter, updatedJob, option)
             res.send(result)
         })
+
+        app.put('/addProfile', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user?.email }
+            const option = { upsert: true }
+            const updateProfile = {
+                $set: {
+                    name: user?.name,
+                    Headline: user?.Headline,
+                    skills: user?.skills,
+                    Country: user?.Country,
+                    City: user?.City,
+                    link: user?.link,
+                    email: user?.email
+                }
+            }
+            console.log(updateProfile)
+            const result = await userProfileCollection.updateOne(filter, updateProfile, option)
+            res.send(result)
+        })
+
+        app.get('/profileData/:email', async (req, res) => {
+            const query = req.params.email
+            const result = await userProfileCollection.findOne({ email: query })
+            res.send(result)
+        })
     }
     finally {
 
@@ -134,3 +162,14 @@ async function run() {
 run().catch((err) => console.log(err));
 
 app.listen(port, () => console.log(`find job Server Running on port ${port}`));
+
+
+// const allInfo = {
+//     name,
+//     Headline,
+//     skills: selected,
+//     Country,
+//     City,
+//     link,
+//     email: user?.email
+// }
