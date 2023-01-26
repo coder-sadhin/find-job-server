@@ -41,13 +41,17 @@ async function run() {
       res.send(reports);
     });
 
+    jobsReportRoute.get("/reportedJobDetails/:id", async (req, res) => {
+      const query = { _id: ObjectId(req.params.id) };
+      const result = await reportJobCollection.findOne(query);
+      res.send(result);
+    });
     // delete job and report ////
     jobsReportRoute.delete("/deleteReports", async (req, res) => {
       const jobId = req.body.jobId;
-      console.log(jobId);
+      console.log(req.body);
       const deletReport = await reportJobCollection.deleteOne({ jobId: jobId });
-
-      const deletjob = await jobsCollection.deleteOne({ _id: ObjectId(jobId) });
+      // const deletjob = await jobsCollection.deleteOne({ _id: ObjectId(jobId) });
       res.send({ name: "delete job and report" });
     });
     jobsReportRoute.get("/isreport", async (req, res) => {
